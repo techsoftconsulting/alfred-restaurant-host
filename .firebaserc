@@ -1,0 +1,19 @@
+{
+  "projects": {},
+  "targets": {
+    "web-panel--prod-c262d": {
+      "hosting": {
+        "alfred-restaurant-host-prod": [
+          "alfred-restaurant-host-prod"
+        ]
+      }
+    },
+    "web-panel-c262d": {
+      "hosting": {
+        "alfred-restaurant-host-dev": [
+          "alfred-restaurant-host-dev"
+        ]
+      }
+    }
+  }
+}
