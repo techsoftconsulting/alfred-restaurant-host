@@ -82,7 +82,7 @@ export function Agenda({ showControls = true, onMonthChange, calendarRef, ...pro
     const hasEvents = !!props.onAddEvent;
 
     if (!ready) return <Box />;
-
+    var DAY_NAMES = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
     return (
             <FullCalendar
                     ref={calendarRef}
@@ -99,6 +99,9 @@ export function Agenda({ showControls = true, onMonthChange, calendarRef, ...pro
                     }}
                     buttonText={{
                         today: 'Hoy'
+                    }}
+                    dayHeaderContent={(arg) => {
+                        return DAY_NAMES[arg.date.getDay()];
                     }}
                     dayMaxEventRows={100}
                     locale={'es'}

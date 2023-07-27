@@ -11,6 +11,7 @@ import { Image } from '@main-components/Base/Image';
 import images from '@shared/ui/images/images';
 import TouchableOpacity from '@main-components/Utilities/TouchableOpacity';
 import useNotify from '@shared/domain/hooks/use-notify';
+import ScrollView from '@main-components/Utilities/ScrollView';
 
 export default function NewReservationScreen() {
     const { navigate } = useNavigation();
@@ -24,40 +25,37 @@ export default function NewReservationScreen() {
                     loading={false}
 
             >
-                <Box
-                        justifyContent={'center'}
-                        flex={1}
-                        maxWidth={{
-                            tablet: 600,
-                            large: 800
-                        }}
-                        alignSelf={'center'}
-                >
-                    <ReservationForm
-                            onSaving={() => {
-                                setSaving(true);
-                            }}
-                            onSave={() => {
-                                setSuccess(true);
-                            }}
-                            onSuccess={() => {
-                                setSuccess(true);
-                            }}
-                            onError={(message) => {
-                                setSaving(false);
-                                if (message == 'INVALID_RESERVATION') {
-                                    notify('Ya hay una reservación para ese horario', 'error');
-                                } else {
-                                    notify('No fue posible hacer la reservacion', 'error');
-                                }
+                <ScrollView>
+                    <Box paddingHorizontal={'m'}>
+                        <ReservationForm
+                                onSaving={() => {
+                                    setSaving(true);
+                                }}
+                                onSave={() => {
+                                    setSuccess(true);
+                                }}
+                                onSuccess={() => {
+                                    setSuccess(true);
+                                }}
+                                onError={(message) => {
+                                    setSaving(false);
+                                    if (message == 'INVALID_RESERVATION') {
+                                        notify('Ya hay una reservación para ese horario', 'error');
+                                    } else {
+                                        notify('No fue posible hacer la reservacion', 'error');
+                                    }
 
-                            }}
-                            onCancelSuccess={() => {
+                                }}
+                                defaultValues={{
+                                    clientEnabled: true
+                                }}
+                                onCancelSuccess={() => {
 
-                            }}
-                    />
-                </Box>
+                                }}
+                        />
+                    </Box>
 
+                </ScrollView>
 
                 <CreatingModal
                         modal={{

@@ -1,5 +1,10 @@
 #html5qr-code-full-region {
     border: 0 !important;
+
+}
+
+#html5qr-code-full-region * {
+    color: white !important;
 }
 
 #html5-qrcode-anchor-scan-type-change {
@@ -7,11 +12,12 @@
 }
 
 #html5qr-code-full-region button {
-    background-color: #000;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 8px;
+    background-color: transparent;
+    border-radius: 0px;
     border: 0;
+    border-bottom: 1px solid #9E2DDE;
+    color: white !important;
+    padding: 16px 24px;
     font-size: 18px;
 }
 
@@ -21,9 +27,17 @@
     border-radius: 8px;
     padding: 16px 24px;
     font-size: 18px;
-    background-color: #EEEEEE;
+    background-color: transparent !important;
+
 }
 
+#html5qr-code-full-region img[alt="Camera based scan"] {
+    width: 200px;
+    height: 200px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: white;
+}
 
 #html5qr-code-full-region img[alt="Info icon"] {
     display: none;
@@ -198,6 +212,15 @@
 .fc-theme-standard th {
     border: 1px solid #ddd;
     border: 1px solid var(--fc-border-color, #ddd);
+}
+
+.fc-theme-standard td:last-child,
+.fc-theme-standard th:last-child {
+    border-right-width: 0 !important;
+}
+
+.fc-theme-standard tr:last-child td {
+    border-bottom: 0 !important;
 }
 
 /* for FF, which doesn't expand a 100% div within a table cell. use absolute positioning */
@@ -521,6 +544,12 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc-theme-standard .fc-scrollgrid {
     border: 1px solid #ddd;
     border: 1px solid var(--fc-border-color, #ddd); /* bootstrap does this. match */
+    border-width: 0;
+}
+
+.fc-dayGridMonth-view {
+    border: 1px solid var(--fc-border-color, #ddd);
+    border-radius: 20px;
 }
 
 .fc .fc-scrollgrid,
@@ -635,6 +664,7 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc .fc-col-header-cell-cushion {
     display: inline-block; /* x-browser for when sticky (when multi-tier header) */
     padding: 2px 4px;
+    font-size: 20px;
 }
 
 .fc .fc-bg-event,
@@ -940,6 +970,26 @@ A HORIZONTAL event
 
 :root {
     --fc-daygrid-event-dot-width: 8px;
+    --fc-today-bg-color: #c127a947;
+    --fc-header-bg: #c127a947;
+    --fc-header-text-color: #C127A9;
+}
+
+.fc-col-header .fc-col-header-cell {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: var(--fc-header-bg);
+    color: var(--fc-header-text-color);
+    border-right-color: var(--fc-header-text-color) !important;
+    border-bottom-color: var(--fc-header-text-color) !important;
+}
+
+.fc-col-header .fc-col-header-cell:first-child {
+    border-top-left-radius: 20px;
+}
+
+.fc-col-header .fc-col-header-cell:last-child {
+    border-top-right-radius: 20px;
 }
 
 /* help things clear margins of inner content */
@@ -1000,6 +1050,8 @@ A HORIZONTAL event
     position: relative;
     z-index: 4;
     padding: 4px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .fc {

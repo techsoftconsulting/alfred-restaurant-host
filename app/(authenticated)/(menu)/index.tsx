@@ -1,7 +1,7 @@
-import ScanScreen from '@modules/user/ui/screens/ScanScreen';
+import ReservationsScreen from '@modules/reservations/ui/screens/ReservationsScreen';
 
 export default function InitialRoute() {
     return (
-            <ScanScreen />
+            <ReservationsScreen />
     );
 }

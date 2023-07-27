@@ -72,30 +72,30 @@ const MENU_MAP = {
                         }}
                 />
         )
-    },
-    'SCAN': {
-        route: 'scan',
-        component: (
-                <Tabs.Screen
-
-                        name={'scan'}
-                        options={{
-                            unmountOnBlur: true,
-                            tabBarIcon: (props: any) => (
-                                    <Icon
-                                            name={'scan'}
-                                            type={'ionicon'}
-                                            color={props.color ?? 'white'}
-                                            numberSize={45}
-                                    />
-                            ),
-                            title: 'Escanear',
-                            headerTitle: '',
-                            headerShown: false
-                        }}
-                />
-        )
     }
+    /*  'SCAN': {
+          route: 'scan',
+          component: (
+                  <Tabs.Screen
+
+                          name={'scan'}
+                          options={{
+                              unmountOnBlur: true,
+                              tabBarIcon: (props: any) => (
+                                      <Icon
+                                              name={'scan'}
+                                              type={'ionicon'}
+                                              color={props.color ?? 'white'}
+                                              numberSize={45}
+                                      />
+                              ),
+                              title: 'Escanear',
+                              headerTitle: '',
+                              headerShown: false
+                          }}
+                  />
+          )
+      }*/
 
 
 };
@@ -134,6 +134,7 @@ export default function Layout() {
                 <Tabs.Screen
                         name={'index'}
                         options={{
+                            href: null,
                             unmountOnBlur: true,
                             title: '',
                             headerTitle: '',
@@ -160,7 +161,10 @@ function AppTabs(props: any) {
                     gap={'xl'}
             >
                 {
-                    Object.keys(props.descriptors).map(descriptor => {
+                    Object.keys(props.descriptors).filter(el => {
+                        const desc = props.descriptors[el];
+                        return !!desc.options?.tabBarIcon;
+                    }).map(descriptor => {
                         const desc = props.descriptors[descriptor];
 
                         return (

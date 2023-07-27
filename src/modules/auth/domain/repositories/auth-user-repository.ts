@@ -1,9 +1,9 @@
-import AppVersion from '@modules/auth/domain/models/app-version';
-
 export default interface AuthUserRepository {
 
-    resetPassword(userEmail: string): Promise<void>;
+    forgotPassword(userEmail: string): Promise<void>;
 
-    getAppVersion(): Promise<AppVersion>;
+    verifyResetPasswordCode(params: { email: string; code: string }): Promise<void>;
+
+    resetPassword(params: { email: string; code: string, password: string }): Promise<void>;
 
 }

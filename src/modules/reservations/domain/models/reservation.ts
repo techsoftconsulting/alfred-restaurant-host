@@ -73,6 +73,10 @@ export default class Reservation {
         return this.props.table.id;
     }
 
+    get restaurantName() {
+        return this.props.restaurant.name;
+    }
+
     get date() {
         return this.props.date;
     }
@@ -129,6 +133,16 @@ export default class Reservation {
 
     get isCheckedIn() {
         return this.props.checkedIn;
+    }
+
+    get isWaiting() {
+        if (this.props.canceled) return false;
+        if (this.props.checkedIn) return false;
+        return !this.isPast;
+    }
+
+    get isPast() {
+        return DateTimeUtils.isPast(DateTimeUtils.endOfDay(DateTimeUtils.fromTime(this.props.date, 'YYYY-MM-DD')));
     }
 
     get canceled() {

@@ -5,6 +5,7 @@ import ApiClientRepository from '@modules/clients/infrastructure/respositories/a
 import ApiRestaurantMallRepository from '@modules/user/infrastructure/repositories/api-restaurant-mall-repository';
 import ApiAccountsRepository from '@modules/user/infrastructure/repositories/api-accounts-repository';
 import ApiReservationRepository from '@modules/reservations/infrastructure/repositories/api-reservation-repository';
+import ApiAuthUserRepository from '@modules/auth/infrastructure/repositories/api-auth-user-repository';
 
 const AppDataProvider = (userTokenId?: string) => {
 
@@ -13,6 +14,7 @@ const AppDataProvider = (userTokenId?: string) => {
     };
 
     return {
+        AuthUserRepository: new ApiAuthUserRepository(),
         ClientRepository: new ApiClientRepository(defaultProps),
         RestaurantAreaRepository: new ApiRestaurantAreaRepository(defaultProps),
         RestaurantRepository: new ApiRestaurantRepository(defaultProps),

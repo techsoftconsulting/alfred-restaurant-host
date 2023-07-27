@@ -452,8 +452,8 @@ function ReservationTimeInput(props) {
 
     const slots = ArrayUtils.orderBy(ArrayUtils.uniqBy(availability?.tables.flatMap(t => t.availableSlots).map(el => {
         return {
-            str: el,
-            hour: DateTimeUtils.fromTime(el)
+            str: el.start,
+            hour: DateTimeUtils.fromTime(el.start)
         };
     }), 'str'), ['hour'], ['asc']);
 
@@ -497,7 +497,7 @@ function SelectedTableInput(props: any) {
     } = useGetRestaurantAvailability(identity?.restaurantId, DateTimeUtils.format(date, 'YYYY-MM-DD'), { enabled: !!identity?.restaurantId && !!date && date !== '' });
 
 
-    const options = (!availability || !hour || hour == '') ? [] : availability?.tables.filter(el => el.availableSlots.includes(hour));
+    const options = (!availability || !hour || hour == '') ? [] : availability?.tables.filter(el => el.availableSlots.map(slot => slot.start).includes(hour));
 
     const defaultOptions = options?.map(o => {
         return {

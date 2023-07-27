@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const qrcodeRegionId = 'html5qr-code-full-region';
 
@@ -124,27 +125,43 @@ function scannerTranslator() {
 }
 
 
-export default function QRScanner({ onScanned, size, onError }: { onScanned: any, size: number, onError: any }) {
+export default function QRScanner({
+    orientation,
+    onScanned,
+    size,
+    onError
+}: { orientation: boolean; onScanned: any, size: number, onError: any }) {
+
+
+    const html5QrcodeScanner = useRef();
+
     useEffect(() => {
         // when component mounts
-        const config = createConfig({
-            qrCodeSuccessCallback: onScanned,
-            disableFlip: true,
-            rememberLastUsedCamera: true,
-            qrbox: {
-                width: size,
-                height: size
-            },
-            fps: 10
-        });
+        initialize(orientation);
+
+        // cleanup function when component will unmount
+        return () => {
+            html5QrcodeScanner.current?.clear?.().catch(error => {
+                console.error('Failed to clear html5QrcodeScanner. ', error);
+            });
+        };
+    }, []);
+
+    function initialize(orientation) {
+
         const verbose = false;
         // Suceess callback is required.
         if (!(onScanned)) {
             throw 'qrCodeSuccessCallback is required callback.';
         }
-        const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, {
-            disableFlip: true,
-            rememberLastUsedCamera: true,
+
+        html5QrcodeScanner.current = new Html5QrcodeScanner(qrcodeRegionId, {
+            disableFlip: false,
+            /*   rememberLastUsedCamera: true,*/
+            videoConstraints: {
+                aspectRatio: orientation == 'LANDSCAPE' ? 1 / 0.5 : 1 / 2
+                /*width: size * 2,*/
+            },
             qrbox: {
                 width: size,
                 height: size
@@ -153,20 +170,42 @@ export default function QRScanner({ onScanned, size, onError }: { onScanned: any
 
         }, verbose);
 
-        html5QrcodeScanner.render(onScanned, onError);
+        html5QrcodeScanner.current.render(onScanned, onError);
         scannerTranslator(document.querySelector('#' + qrcodeRegionId));
-        // cleanup function when component will unmount
-        return () => {
-            html5QrcodeScanner.clear().catch(error => {
-                console.error('Failed to clear html5QrcodeScanner. ', error);
-            });
-        };
-    }, []);
+    }
 
 
     return (
             <div id={qrcodeRegionId} />
     );
+}
+
+export function useHandleOrientation() {
+    const [orientation, setOrientation] = useState(null);
+
+    useEffect(() => {
+        checkOrientation();
+        const subscription = ScreenOrientation.addOrientationChangeListener(
+                handleOrientationChange
+        );
+
+        return () => {
+            ScreenOrientation.removeOrientationChangeListeners(subscription);
+        };
+    }, []);
+
+    const checkOrientation = async () => {
+        const orientation = await ScreenOrientation.getOrientationAsync();
+        setOrientation(orientation);
+    };
+    const handleOrientationChange = (o) => {
+        setOrientation(o.orientationInfo.orientation);
+    };
+
+
+    return {
+        orientation: [0, 1, 2].includes(orientation) ? 'PORTRAIT' : 'LANDSCAPE'
+    };
 }
 
 export function useScanner() {

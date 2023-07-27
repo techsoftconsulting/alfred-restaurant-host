@@ -20,6 +20,8 @@ import { useDeleteReservation } from '@modules/reservations/application/use-dele
 import useUpdateReservation from '@modules/reservations/application/use-update-reservation';
 import { Modal } from '@main-components/Base/Modal';
 import TouchableOpacity from '@main-components/Utilities/TouchableOpacity';
+import ScanReservationController
+    from '@modules/reservations/ui/screens/ReservationsScreen/components/ScanReservationController';
 
 export default function ReservationsScreen() {
     const { loading: loadingReservations } = useFindReservations({}, undefined, undefined, undefined);
@@ -30,6 +32,7 @@ export default function ReservationsScreen() {
 
     const { delete: removeReservation, loading: deleting } = useDeleteReservation();
 
+    const [showScanner, setShowScanner] = useState(false);
 
     const [showSaveModal, setShowSaveModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
@@ -57,6 +60,9 @@ export default function ReservationsScreen() {
                 content:
                         '¿Estás seguro que deseas eliminar esta reservación?'
             });
+        },
+        onCheckItem(item) {
+            setShowScanner(true);
         }
     };
     return (
@@ -123,6 +129,16 @@ export default function ReservationsScreen() {
                         )
                     }
                 </ScrollView>
+
+
+                <ScanReservationController
+                        modal={{
+                            visible: showScanner,
+                            onDismiss() {
+                                setShowScanner(false);
+                            }
+                        }}
+                />
 
                 <SaveReservationModal
                         modal={{
@@ -199,8 +215,7 @@ function ListView(props) {
                                                 onEditItem={props.onEditItem}
                                                 onDeleteItem={props.onDeleteItem}
                                                 onCheckItem={(item: Reservation) => {
-                                                    item.checkIn();
-                                                    props.updateReservation(item.id, item);
+                                                    props.onCheckItem(item);
                                                 }}
                                         />
                                     </Box>
@@ -492,17 +507,24 @@ function ItemsList({
                                         mb={'m'}
                                         p={'s'}
                                 >
-                                    <Box flex={0 - 3}>
+                                    <Box
+                                            minWidth={70}
+                                    >
                                         <Text color={'white'}>{item.hour}</Text>
                                     </Box>
-                                    <Box flex={1}>
-                                        <Text color={'white'}>{item.clientName}</Text>
+                                    <Box
+                                            flex={1}
+                                    >
+                                        <Text
+                                                numberOfLines={2}
+                                                color={'white'}
+                                        >{item.clientName}</Text>
                                     </Box>
                                     <Box flex={1}>
-                                        <Text color={'white'}>{item.clientPhone}</Text>
-                                    </Box>
-                                    <Box>
-                                        <Text color={'white'}>{item.mallName}</Text>
+                                        <Text
+                                                color={'white'}
+                                                numberOfLines={1}
+                                        >{item.clientPhone}</Text>
                                     </Box>
                                     <Box>
                                         <Box
@@ -519,7 +541,8 @@ function ItemsList({
                                     </Box>
                                     <Box
                                             flex={1}
-                                            maxWidth={200}
+                                            width={'100%'}
+                                            minWidth={140}
                                             alignItems={'flex-end'}
                                     >
                                         <RowOptions
@@ -531,17 +554,7 @@ function ItemsList({
                                                     onDeleteItem(item.id);
                                                 }}
                                                 onCheck={() => {
-                                                    confirm({
-                                                        title: 'Confirmar asistencia',
-                                                        content: 'Confirmar asistencia de la reservación',
-                                                        options: {
-                                                            cancelText: 'Cerrar',
-                                                            confirmText: 'Sí, confirmar'
-                                                        },
-                                                        onConfirm() {
-                                                            onCheckItem(c);
-                                                        }
-                                                    });
+                                                    onCheckItem(item);
                                                 }}
                                         />
                                     </Box>
@@ -557,11 +570,29 @@ function ItemsList({
 
 
 function RowOptions({ entity, onEdit, onDelete, onCheck }: { onCheck: any; entity: any, onEdit: any; onDelete: any }) {
+    console.log(entity.isWaiting);
     return (
             <Box
                     gap={'m'}
                     flexDirection={'row'}
             >
+                {
+                        !!entity?.isWaiting && (
+                                <IconButton
+                                        onPress={() => {
+                                            onCheck();
+                                        }}
+                                        containerSize={40}
+                                        borderRadius={40}
+                                        backgroundColor={'white'}
+                                        iconType={'ionicon'}
+                                        iconColor={'greyDark'}
+                                        iconName={'scan'}
+                                        iconSize={24}
+                                />
+                        )
+                }
+
                 {
                         !entity?.canceled && (
                                 <IconButton

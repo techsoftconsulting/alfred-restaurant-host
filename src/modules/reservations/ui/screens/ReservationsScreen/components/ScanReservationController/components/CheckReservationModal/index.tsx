@@ -2,10 +2,10 @@ import { Modal, ModalHeader, ModalProps } from '@main-components/Base/Modal';
 import { Box } from '@main-components/Base/Box';
 import useGetReservation from '@modules/reservations/application/use-get-reservation';
 import useNotify from '@shared/domain/hooks/use-notify';
-import CheckReservationForm
-    from '@modules/user/ui/screens/ScanScreen/components/CheckReservationModal/components/CheckReservationForm';
 import Text from '@main-components/Typography/Text';
 import { Button } from '@main-components/Base/Button';
+import CheckReservationForm
+    from '@modules/reservations/ui/screens/ReservationsScreen/components/ScanReservationController/components/CheckReservationModal/components/CheckReservationForm';
 
 interface CheckReservationModalProps {
     modal: Partial<ModalProps>,

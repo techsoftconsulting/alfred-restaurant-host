@@ -98,7 +98,8 @@ export function Button({
                             color: titleColor ? theme.colors[titleColor] : 'white'
                         },
                         /*boxShadow: '0px 2px 10px  #ededed',*/
-                        borderRadius: `${borderRadius ? theme.borderRadius[borderRadius] : 0}px`
+                        borderRadius: `${borderRadius ? theme.borderRadius[borderRadius] : 0}px`,
+                        ...style ?? {}
                     }}
             >
                 {title}

@@ -93,7 +93,6 @@ function FormToolbar(props) {
                                     return;
                                 }
 
-                                console.log(e);
                             }
 
                         }}

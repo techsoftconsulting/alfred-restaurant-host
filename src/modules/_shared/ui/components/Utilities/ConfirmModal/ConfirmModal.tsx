@@ -5,6 +5,9 @@ import Text from '@main-components/Typography/Text';
 import { useTheme } from '@modules/_shared/ui/theme/AppTheme';
 import React from 'react';
 import { Platform } from 'react-native';
+import { Image } from '@main-components/Base/Image';
+import images from '@shared/ui/images/images';
+import { IconButton } from '@main-components/Base/IconButton';
 
 interface ConfirmModalProps extends Omit<ModalProps, 'children'> {
     onConfirm: () => void;
@@ -26,6 +29,7 @@ export default function ConfirmModal({
                     {...props}
                     onDismiss={props.onClose}
                     contentContainerStyle={{
+                        backgroundColor: 'black',
                         borderRadius: 20,
                         width: Platform.select({
                             web: '70%',
@@ -40,6 +44,30 @@ export default function ConfirmModal({
                         padding: 20
                     }}
             >
+                <Box
+                        position={'absolute'}
+                        right={10}
+                        top={10}
+                        zIndex={99999}
+                >
+                    <IconButton
+                            onPress={() => {
+                                props.onClose?.();
+                            }}
+                            iconSize={40}
+                            iconName={'close-circle-outline'}
+                            iconType={'ionicon'}
+                    />
+                </Box>
+                <Box alignItems={'center'}>
+                    <Image
+                            source={images.WARNING}
+                            style={{
+                                width: 150,
+                                height: 150
+                            }}
+                    />
+                </Box>
                 <Box style={{ paddingBottom: 0 }}>
                     <Box
                             padding='m'
@@ -53,7 +81,7 @@ export default function ConfirmModal({
                             ) : (
                                     <Text
                                             align={'center'}
-                                            color='black'
+                                            color='white'
                                             variant='heading3'
                                     >
                                         {props.title}
@@ -67,7 +95,7 @@ export default function ConfirmModal({
                                 props.content
                         ) : (
                                 <Text
-                                        color='greyMain'
+                                        color='white'
                                         align={'center'}
                                         variant='body'
                                 >
@@ -81,7 +109,7 @@ export default function ConfirmModal({
                             justifyContent='center'
                             paddingVertical={'m'}
                     >
-                        <Box
+                        {/* <Box
                                 flex={0.4}
                                 mr={'m'}
                         >
@@ -98,7 +126,7 @@ export default function ConfirmModal({
                                             }}
                                     />
                             )}
-                        </Box>
+                        </Box>*/}
                         <Box flex={0.4}>
                             <Button
                                     title={props.confirmText || 'Aceptar'}
@@ -108,6 +136,10 @@ export default function ConfirmModal({
                                     compact
                                     flat
                                     block
+                                    style={{
+                                        borderRadius: 0,
+                                        borderBottom: `1px solid ${theme.colors.contrastMain}`
+                                    }}
                                     onPress={() => {
                                         props.onConfirm();
                                     }}

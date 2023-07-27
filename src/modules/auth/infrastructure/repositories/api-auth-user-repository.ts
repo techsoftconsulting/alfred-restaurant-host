@@ -1,28 +1,22 @@
 import AuthUserRepository from '@modules/auth/domain/repositories/auth-user-repository';
-import AppVersion from '@modules/auth/domain/models/app-version';
-import FirestoreApiRepository from '@shared/infrastructure/firebase/firestore-api-repository';
-import { sendPasswordResetEmail } from 'firebase/auth';
+import APIRepository from '@shared/infrastructure/api/api-repository';
 
-export default class ApiAuthUserRepository extends FirestoreApiRepository implements AuthUserRepository {
+const COLLECTION_NAME = 'forgot-password';
 
-    async resetPassword(userEmail: string): Promise<void> {
-        await sendPasswordResetEmail(this.firebaseAuth, userEmail);
+export default class ApiAuthUserRepository extends APIRepository implements AuthUserRepository {
+
+    async verifyResetPasswordCode(params: { email: string; code: string }): Promise<void> {
+        await this.post(`${COLLECTION_NAME}/verify-reset-password-code`, params);
     }
 
+    async forgotPassword(userEmail: string): Promise<void> {
+        await this.post(`${COLLECTION_NAME}/request-change-password`, {
+            email: userEmail
+        });
+    }
 
-    async getAppVersion(): Promise<AppVersion> {
-        const dto = await this.getDoc('app_configurations', 'GLOBAL_STATE');
-
-        if (!dto) return {
-            active: true
-        };
-
-        return {
-            active: dto.available ?? true,
-            title: dto.title,
-            version: dto.appVersion,
-            message: dto.message
-        };
+    async resetPassword(params: { email: string; code: string, password: string }): Promise<void> {
+        await this.post(`${COLLECTION_NAME}/change-password`, params);
     }
 
 }
