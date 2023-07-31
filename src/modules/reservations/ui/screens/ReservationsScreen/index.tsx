@@ -22,6 +22,7 @@ import { Modal } from '@main-components/Base/Modal';
 import TouchableOpacity from '@main-components/Utilities/TouchableOpacity';
 import ScanReservationController
     from '@modules/reservations/ui/screens/ReservationsScreen/components/ScanReservationController';
+import useNavigation from '@shared/domain/hooks/navigation/use-navigation';
 
 export default function ReservationsScreen() {
     const { loading: loadingReservations } = useFindReservations({}, undefined, undefined, undefined);
@@ -38,8 +39,9 @@ export default function ReservationsScreen() {
     const [editingItem, setEditingItem] = useState(null);
     const [selectedLayout, setSelectedLayout] = useState('list');
     const [defaultValues, setDefaultValues] = useState(null);
-
     const confirm = useConfirm();
+
+    const { navigate } = useNavigation();
 
 
     const actionProps = {
@@ -105,6 +107,14 @@ export default function ReservationsScreen() {
                                     }}
                             />
                         </Box>
+                    </Box>
+
+                    <Box>
+                        <AddButton
+                                onPress={() => {
+                                    navigate('/create');
+                                }}
+                        />
                     </Box>
 
                 </Box>
@@ -413,7 +423,7 @@ function CalendarEventsDetailsModal({ onItemPress, ...props }) {
                                                         <Text
                                                                 bold
                                                                 color={'white'}
-                                                        >Hora: {item.hour}</Text>
+                                                        >Hora: {` ${item.hour}`}</Text>
                                                     </Box>
                                                 </Box>
                                             </TouchableOpacity>
@@ -450,6 +460,26 @@ function CalendarEventsDetailsModal({ onItemPress, ...props }) {
                 </Box>
             </Modal>
 
+    );
+}
+
+function AddButton({ onPress }) {
+    return (
+            <TouchableOpacity onPress={onPress}>
+                <Box
+                        bg={'greyDark'}
+                        borderRadius={16}
+                        p={'m'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                >
+                    <Icon
+                            name={'plus-circle-outline'}
+                            type={'material-community-icons'}
+                            numberSize={24}
+                    />
+                </Box>
+            </TouchableOpacity>
     );
 }
 
@@ -570,7 +600,7 @@ function ItemsList({
 
 
 function RowOptions({ entity, onEdit, onDelete, onCheck }: { onCheck: any; entity: any, onEdit: any; onDelete: any }) {
-    console.log(entity.isWaiting);
+
     return (
             <Box
                     gap={'m'}

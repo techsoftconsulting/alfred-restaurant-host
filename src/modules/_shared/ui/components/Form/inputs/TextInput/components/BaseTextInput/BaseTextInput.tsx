@@ -5,6 +5,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { BaseTextInputProps } from './BaseTextInputProps';
 import { FormControl, TextField } from '@mui/material';
+import { TextInput as PaperInput } from 'react-native-paper';
 
 function BaseTextInput(
         {
@@ -54,9 +55,25 @@ function BaseTextInput(
                             autoCapitalize={'none'}
                             autoComplete={'none'}
                             value={props.value}
-                            inputProps={{
+                            InputProps={{
                                 autoCapitalize: 'none',
-                                autoCorrect: 'off'
+                                autoCorrect: 'off',
+                                endAdornment: props.rightIcon && (
+                                        <Box
+                                                height={30}
+                                                width={30}
+                                                justifyContent={'center'}
+                                                alignItems={'center'}
+                                        >
+                                            <PaperInput.Icon
+                                                    name={props.rightIcon.name}
+                                                    size={30}
+                                                    onPress={props.rightIcon.onPress}
+                                                    color={props.rightIcon.color ? theme.colors[props.rightIcon.color] : theme.colors.inputPlaceholderColor}
+                                            />
+                                        </Box>
+
+                                )
                             }}
                             /*  render={props.render}*/
                             disabled={props.disabled}
@@ -66,6 +83,7 @@ function BaseTextInput(
                                selectionColor={theme.colors.textInputColor}*/
                             /*mode='outlined'*/
                             variant={'outlined'}
+
                             /*        underlineColor={'transparent'}
                                     dense={dense}*/
                             /* outlineColor='transparent'*/
